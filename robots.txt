@@ -1,0 +1,8 @@
+# robots.txt - LabES (Laboratório de Engenharia de Software - ICMC/USP)
+# Permite o rastreamento de todas as páginas públicas.
+
+User-agent: *
+Allow: /
+
+# Sitemap (URL absoluta exigida pelos buscadores)
+Sitemap: https://labes-caed-icmc-usp.github.io/sitemap.xml
