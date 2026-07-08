@@ -13,3 +13,9 @@ Thumbs.db
 *.tmp
 *.bak
 
+# Documentação interna de desenvolvimento (não publicar no repositório público)
+docs/
+
+# Configuração local do Claude Code
+.claude/
+

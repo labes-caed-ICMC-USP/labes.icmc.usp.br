@@ -1,160 +1,132 @@
 # LabES Website
 
-Este repositório contém o site institucional do **LabES (Laboratório de Engenharia de Software)**, vinculado ao ICMC-USP.
+Site institucional do **LabES (Laboratório de Engenharia de Software)**, vinculado ao ICMC-USP.
 
-O projeto apresenta informações sobre o laboratório, sua história, oportunidades para alunos, materiais de apoio como o Manual do Aluno e uma página dedicada ao CAEd. A base visual foi adaptada a partir do template `College`, da BootstrapMade, e customizada para o contexto do laboratório.
+**URL de produção:** <https://www.labes.icmc.usp.br>
 
-**URL de produção:** <https://labes-caed-icmc-usp.github.io/>
+---
 
-> O site é publicado pelo **GitHub Pages** como site de organização (servido na raiz
-> do domínio `labes-caed-icmc-usp.github.io`). Veja em
-> [Migração futura para domínio próprio](#migração-futura-para-domínio-próprio)
-> como apontar `www.labes.icmc.usp.br` quando o DNS estiver disponível.
+## Tecnologias
 
-## Tecnologias utilizadas
-
-- HTML5
-- CSS3
-- JavaScript (vanilla)
+- HTML5, CSS3, JavaScript (vanilla)
 - Bootstrap 5
-- Bibliotecas front-end em `assets/vendor`
+- Arquitetura JSON-driven: todo o conteúdo é editado em arquivos JSON em `assets/data/`
 
-## Estrutura do projeto
+---
 
-O site usa URLs limpas (sem `.html`): cada página fica em uma pasta com seu `index.html`,
-servido na raiz como `/pasta/`.
+## Estrutura de páginas
 
-- `index.html`: página inicial (`/`)
-- `manual-do-aluno/index.html`: página "Manual do Aluno" (`/manual-do-aluno/`)
-- `caed/index.html`: página institucional do CAEd (`/caed/`)
-- `orientadores/index.html`: lista de orientadores (`/orientadores/`)
-- `orientador/index.html`: perfil individual do orientador (`/orientador/?id=...`)
-- `404.html`: página de erro (caminhos absolutos a partir da raiz, marcada como `noindex`)
-- `robots.txt`: libera o rastreamento e aponta para o sitemap
-- `sitemap.xml`: lista das páginas públicas para os buscadores
-- `.nojekyll`: desativa o processamento Jekyll no GitHub Pages (serve os arquivos como estão)
-- `assets/`: imagens, estilos, scripts e bibliotecas de terceiros
-  - `assets/data/orientadores.json`: dados dos orientadores (carregados por `assets/js/orientadores.js`)
+O site usa clean URLs via subpastas com `index.html`:
 
-## Como executar o projeto localmente
+| Arquivo | URL |
+|---|---|
+| `index.html` | `/` |
+| `manual-do-aluno/index.html` | `/manual-do-aluno/` |
+| `caed/index.html` | `/caed/` |
+| `orientadores/index.html` | `/orientadores/` |
+| `orientador/index.html` | `/orientador/?id=...` |
+| `404.html` | qualquer rota inexistente |
 
-O site é totalmente estático. Sirva a partir da **raiz do repositório** para que as URLs
-limpas (`/manual-do-aluno/`, `/caed/`, etc.) funcionem como em produção:
+---
+
+## Como atualizar conteúdo
+
+Todo o conteúdo é gerenciado pelos arquivos em `assets/data/`. Edite o JSON correspondente e faça push — nenhuma alteração no HTML é necessária para mudanças de conteúdo.
+
+| Arquivo | Controla |
+|---|---|
+| `assets/data/site.json` | Nav, rodapé (logo, links, contato, redes sociais) |
+| `assets/data/historia.json` | Home: hero, timeline, vida estudantil, seção ICMC |
+| `assets/data/stats.json` | Home: contadores animados de alunos |
+| `assets/data/caed.json` | Página CAEd |
+| `assets/data/manual-aluno.json` | Página Manual do Aluno |
+| `assets/data/orientadores.json` | Lista e perfis dos orientadores ativos |
+| `assets/data/orientadores-inativos.json` | Seção de docentes históricos |
+
+### Adicionando ou editando um orientador
+
+Cada entrada em `orientadores.json` segue este formato (todos os campos são opcionais exceto `id` e `nome`):
+
+```json
+{
+  "id": "slug-unico",
+  "nome": "Nome Completo",
+  "foto": "/assets/img/orientadores/arquivo.png",
+  "email": "email@icmc.usp.br",
+  "site": "https://...",
+  "lattes": "http://lattes.cnpq.br/...",
+  "linkedin": "https://www.linkedin.com/in/...",
+  "orcid": "https://orcid.org/...",
+  "linhasPesquisa": ["Linha principal", "-- Sublinha"],
+  "descricao": "Biografia...",
+  "curiosidade": "",
+  "hobby": ""
+}
+```
+
+O campo `id` define a URL do perfil: `id: "jose-silva"` → `/orientador/?id=jose-silva`.  
+As fotos devem ser adicionadas em `assets/img/orientadores/` com path absoluto.
+
+---
+
+## Como executar localmente
+
+O site é totalmente estático. Sirva a partir da **raiz do repositório** para que as clean URLs e os `fetch()` de dados funcionem corretamente:
 
 ```bash
-python -m http.server 8000
+python -m http.server 3000
 ```
 
-Depois, abra no navegador:
+Acesse em `http://localhost:3000/`. Abrir os arquivos diretamente via `file://` não funciona porque o carregamento de dados depende de `fetch`.
 
-```text
-http://localhost:8000/
+---
+
+## Como adicionar uma nova página
+
+1. Crie a pasta e o `index.html` seguindo o padrão das páginas existentes:
+   - Links e scripts usam `../assets/` (relativo à subpasta)
+   - A `index.html` da raiz usa `assets/` diretamente
+2. Crie o JSON de dados correspondente em `assets/data/` e o JS renderer em `assets/js/`
+3. Adicione a nova URL ao `sitemap.xml`
+4. Adicione o link ao nav em `assets/data/site.json`
+
+---
+
+## Como publicar
+
+O repositório é o **site de organização** do GitHub Pages: o branch `main` é publicado automaticamente na raiz do domínio.
+
+1. Faça commit e push das alterações para `main`
+2. O GitHub Pages publica em alguns minutos em <https://www.labes.icmc.usp.br>
+
+### Domínio próprio
+
+O arquivo `CNAME` na raiz já aponta para `www.labes.icmc.usp.br`. Para que funcione, o DNS do ICMC precisa ter um registro:
+
+```
+www.labes.icmc.usp.br  →  labes-caed-icmc-usp.github.io
 ```
 
-E navegue por `http://localhost:8000/manual-do-aluno/`, `/caed/`, `/orientadores/`.
+Em **Settings → Pages**, confirme que **Custom domain** está configurado e **Enforce HTTPS** está ativo.
 
-> Abrir os arquivos diretamente pelo navegador (`file://`) não funciona bem: o
-> carregamento dos orientadores depende de `fetch` e exige um servidor HTTP.
+---
 
-## Como publicar no GitHub Pages
+## SEO
 
-O site é servido na raiz porque o repositório é o **site de organização**
-(`labes-caed-icmc-usp.github.io`).
+O `sitemap.xml` e o `robots.txt` já apontam para `https://www.labes.icmc.usp.br`.
 
-1. Faça commit e push das alterações para o branch padrão do repositório
-   `labes-caed-icmc-usp/labes-caed-icmc-usp.github.io`.
-2. No GitHub, acesse **Settings → Pages** e confirme que **Source** está como
-   **Deploy from a branch**, no branch padrão e na pasta `/ (root)`.
-3. Aguarde alguns minutos. O site fica disponível em:
+Para cadastrar no Google Search Console:
 
-   <https://labes-caed-icmc-usp.github.io/>
+1. Acesse o [Google Search Console](https://search.google.com/search-console) e adicione a propriedade `https://www.labes.icmc.usp.br`
+2. Verifique a propriedade via meta tag no `<head>` da `index.html`
+3. Em **Sitemaps**, envie `sitemap.xml`
 
-## SEO e indexação no Google
+> As páginas `/orientadores/` e `/orientador/` montam conteúdo via JavaScript. O Google renderiza JS, mas se for necessário garantir indexação dos perfis, considere pré-renderização estática.
 
-### 1. Cadastrar o site no Google Search Console
+---
 
-1. Acesse o [Google Search Console](https://search.google.com/search-console).
-2. Em **Adicionar propriedade**, escolha o tipo **Prefixo do URL**.
-3. Informe exatamente a URL de produção:
+## Convenções
 
-   ```text
-   https://labes-caed-icmc-usp.github.io/
-   ```
-
-4. Confirme a propriedade. Em domínios `github.io`, a verificação por **meta tag**
-   costuma ser a mais simples: copie a tag fornecida pelo Search Console e cole no
-   `<head>` da `index.html` (logo abaixo das demais meta tags). Faça commit/push e
-   clique em **Verificar**.
-
-### 2. Enviar o sitemap
-
-1. No Search Console, com a propriedade selecionada, vá em **Sitemaps**.
-2. Em "Adicionar novo sitemap", informe o caminho relativo:
-
-   ```text
-   sitemap.xml
-   ```
-
-   (o endereço completo será `https://labes-caed-icmc-usp.github.io/sitemap.xml`)
-3. Clique em **Enviar**. O status deve mudar para "Sucesso" em alguns minutos/horas.
-
-### 3. Verificar se o site foi indexado
-
-- **Busca direta:** no Google, pesquise `site:labes-caed-icmc-usp.github.io`.
-  Os resultados mostram as páginas já indexadas.
-- **Inspeção de URL:** no Search Console, use **Inspeção de URL** para verificar
-  uma página específica e solicitar a indexação ("Solicitar indexação").
-- **Páginas:** o relatório **Páginas** mostra quais URLs foram indexadas e
-  eventuais erros.
-
-> A primeira indexação pode levar de alguns dias a algumas semanas. Enviar o
-> sitemap e solicitar a indexação manual das páginas principais acelera o processo.
-
-### Observação sobre a página de orientadores
-
-As páginas `/orientadores/` e `/orientador/?id=...` montam o conteúdo via JavaScript
-(`fetch` do `assets/data/orientadores.json`). O Google renderiza JavaScript, mas se for
-necessário garantir a indexação dos perfis individuais, considere gerar páginas
-estáticas (pré-renderização) para cada orientador no futuro. Há um fallback em
-`<noscript>` na lista para navegadores/robôs sem JavaScript. O `orientadores.js`
-ajusta dinamicamente `canonical`, `og:url`, título e descrição de cada perfil.
-
-## Migração futura para domínio próprio
-
-Quando o domínio `www.labes.icmc.usp.br` estiver disponível e com DNS configurado:
-
-1. Peça à equipe de TI do ICMC para criar um registro **CNAME** no DNS:
-
-   ```text
-   www.labes.icmc.usp.br  →  labes-caed-icmc-usp.github.io
-   ```
-
-2. Só **depois** que o DNS estiver propagado, crie um arquivo `CNAME` na raiz do
-   repositório com o conteúdo:
-
-   ```text
-   www.labes.icmc.usp.br
-   ```
-
-   > ⚠️ Não publique o arquivo `CNAME` antes do DNS estar pronto: o GitHub Pages
-   > passa a redirecionar a URL `github.io` para o domínio próprio e, sem o DNS, o
-   > site fica inacessível.
-3. Em **Settings → Pages**, confirme o **Custom domain** e marque **Enforce HTTPS**.
-4. Atualize a URL oficial em todo o projeto, trocando
-   `https://labes-caed-icmc-usp.github.io/` por `https://www.labes.icmc.usp.br/`:
-   - a linha `Sitemap:` do `robots.txt`
-   - as URLs `<loc>` do `sitemap.xml`
-   - as tags `<link rel="canonical">`, `og:url` e `og:image` de cada página
-   - o `url`/`logo` do JSON-LD na `index.html`
-5. No Google Search Console, cadastre a nova propriedade do domínio próprio e
-   reenvie o sitemap.
-
-## Observações importantes
-
-- As páginas em pastas usam caminhos relativos `../assets/...`; a `index.html` (raiz) usa
-  `assets/...`. Mantenha esse padrão ao criar novas páginas em pastas.
-- O `assets/js/orientadores.js` só é carregado pelas páginas `/orientadores/` e
-  `/orientador/` (ambas em pasta), por isso assume profundidade 1 (`../`).
-- Ao criar uma nova página, lembre-se de adicioná-la ao `sitemap.xml` e de incluir
-  no `<head>`: `<title>` único, `meta description`, `<link rel="canonical">`,
-  `lang="pt-BR"` no `<html>` e as tags Open Graph/Twitter.
+- Paths de dados nos arquivos JS usam paths absolutos: `/assets/data/...`
+- Paths de imagens nos JSONs usam paths absolutos: `/assets/img/...`
+- Páginas em subpastas referenciam assets com `../assets/`; a raiz usa `assets/`
