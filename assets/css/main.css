@@ -5030,6 +5030,28 @@ section,
   padding: 0;
 }
 
+.orientador-action-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.orientador-action-lattes .orientador-action-icon {
+  width: 84px;
+  height: 24px;
+}
+
+.orientador-actions-card .orientador-action-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.orientador-actions-card .orientador-action-lattes .orientador-action-icon {
+  width: 76px;
+  height: 22px;
+}
+
 .orientador-action-link i {
   display: grid;
   width: 28px;
