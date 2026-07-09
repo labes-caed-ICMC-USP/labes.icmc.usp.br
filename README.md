@@ -9,7 +9,6 @@ Site institucional do **LabES (Laboratório de Engenharia de Software)**, vincul
 ## Tecnologias
 
 - HTML5, CSS3, JavaScript (vanilla)
-- Bootstrap 5
 - Arquitetura JSON-driven: todo o conteúdo é editado em arquivos JSON em `assets/data/`
 
 ---

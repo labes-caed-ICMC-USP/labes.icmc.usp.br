@@ -72,7 +72,7 @@
       '<div class="container copyright text-center mt-4">' +
         "<p>&copy; <strong class=\"px-1 sitename\">LabES</strong> <span>Todos os direitos reservados</span></p>" +
         '<div class="credits">' +
-          'Designed by <a href="' + data.footer.creditos.github + '">LabES</a> | Template by <a href="https://bootstrapmade.com/">BootstrapMade</a>' +
+          'Desenvolvido por <a href="' + data.footer.creditos.github + '">LabES</a>' +
         "</div>" +
       "</div>";
   }
