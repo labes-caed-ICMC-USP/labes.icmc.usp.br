@@ -5,13 +5,6 @@
   const INACTIVE_DATA_URL = "/assets/data/orientadores-inativos.json";
   const EMPTY_PROFILE_MESSAGE = "Nenhuma informa\u00e7\u00e3o complementar cadastrada.";
   const RESEARCH_SUBLINE_PREFIX = "-- ";
-  const ACTION_ICON_PATHS = {
-    email: "/assets/img/icons/logo-email.png",
-    site: "/assets/img/icons/logo-site.png",
-    lattes: "/assets/img/icons/logo-curriculo.png",
-    linkedin: "/assets/img/icons/logo-linkedin.svg",
-    orcid: "/assets/img/icons/logo-orcid.svg"
-  };
 
   function hasValue(value) {
     if (Array.isArray(value)) {
@@ -91,7 +84,6 @@
         key: "email",
         label: "E-mail",
         url: emailUrl(orientador.email),
-        image: ACTION_ICON_PATHS.email,
         icon: "bi-envelope-fill"
       });
     }
@@ -101,7 +93,6 @@
         key: "site",
         label: "Site",
         url: normalizedText(orientador.site),
-        image: ACTION_ICON_PATHS.site,
         icon: "bi-globe2"
       });
     }
@@ -111,8 +102,7 @@
         key: "lattes",
         label: "Curr\u00edculo Lattes",
         url: normalizedText(orientador.lattes),
-        image: ACTION_ICON_PATHS.lattes,
-        icon: "bi-journal-text"
+        icon: "bi-file-earmark-person-fill"
       });
     }
 
@@ -121,7 +111,6 @@
         key: "linkedin",
         label: "LinkedIn",
         url: normalizedText(orientador.linkedin),
-        image: ACTION_ICON_PATHS.linkedin,
         icon: "bi-linkedin"
       });
     }
@@ -139,7 +128,6 @@
         key: "orcid",
         label: "ORCID",
         url: normalizedText(orientador.orcid),
-        image: ACTION_ICON_PATHS.orcid,
         icon: "bi-person-badge"
       });
     }
@@ -178,17 +166,8 @@
         anchor.rel = "noopener noreferrer";
       }
 
-      if (hasValue(link.image)) {
-        const image = document.createElement("img");
-        image.src = link.image;
-        image.alt = link.label;
-        image.className = "orientador-action-icon";
-        image.loading = "lazy";
-        anchor.appendChild(image);
-      } else {
-        const icon = createElement("i", `bi ${link.icon}`);
-        anchor.appendChild(icon);
-      }
+      const icon = createElement("i", `bi ${link.icon}`);
+      anchor.appendChild(icon);
 
       actions.appendChild(anchor);
     });
