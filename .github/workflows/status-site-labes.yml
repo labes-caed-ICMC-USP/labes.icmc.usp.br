@@ -12,7 +12,7 @@ env:
   URL: https://www.labes.icmc.usp.br/
   LABEL: site-fora-do-ar
   # Quem deve ser avisado por e-mail quando o site cair (separar por espaço)
-  MENTIONS: '@waismanfb'
+  MENTIONS: '@waisman-braga'
 
 jobs:
   check:
