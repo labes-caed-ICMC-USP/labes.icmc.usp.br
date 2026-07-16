@@ -11,6 +11,8 @@ permissions:
 env:
   URL: https://www.labes.icmc.usp.br/
   LABEL: site-fora-do-ar
+  # Quem deve ser avisado por e-mail quando o site cair (separar por espaço)
+  MENTIONS: '@waismanfb'
 
 jobs:
   check:
@@ -48,7 +50,9 @@ jobs:
 
           Código HTTP recebido: \`$STATUS\` (000 = sem resposta do servidor).
 
-          Log da execução: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          Log da execução: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+
+          cc $MENTIONS"
 
           if [ -z "$existing" ]; then
             gh issue create --repo "$GITHUB_REPOSITORY" \
