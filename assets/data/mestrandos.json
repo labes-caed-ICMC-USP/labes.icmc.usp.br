@@ -1,0 +1,25 @@
+[
+  {
+    "id": "waisman-braga",
+    "nome": "Waisman da Fonseca Braga",
+    "foto": "",
+    "email": "waisman.braga@usp.br",
+    "site": "",
+    "lattes": "http://lattes.cnpq.br/9290391663464488",
+    "linkedin": "https://www.linkedin.com/in/waisman-braga/",
+    "github": "",
+    "orcid": "https://orcid.org/0009-0000-3671-5436",
+    "redes": [],
+    "orientador": "simone-do-rocio-senger-de-souza",
+    "coorientador": "",
+    "ingresso": "2026",
+    "tema": "",
+    "linhasPesquisa": [
+      "Teste de Software",
+      "Aprendizado de Máquina"
+    ],
+    "descricao": "",
+    "curiosidade": "",
+    "hobby": ""
+  }
+]
