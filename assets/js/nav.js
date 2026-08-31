@@ -7,6 +7,18 @@
     return window.location.pathname;
   }
 
+  // Um link fica ativo na sua própria URL, em qualquer subpágina dela e nos
+  // prefixos extras declarados em `match` (ex.: perfis /orientador/ e /mestrando/
+  // pertencem ao item "Equipe").
+  function isActiveLink(link, currentPage) {
+    if (link.href === currentPage) return true;
+
+    var prefixes = [link.href].concat(Array.isArray(link.match) ? link.match : []);
+    return prefixes.some(function (prefix) {
+      return prefix !== "/" && currentPage.startsWith(prefix);
+    });
+  }
+
   function renderNav(data) {
     var container = document.querySelector("#header .header-container");
     if (!container) return;
@@ -14,7 +26,7 @@
     var currentPage = getCurrentPage();
 
     var linksHtml = data.nav.links.map(function (link) {
-      var active = (link.href === currentPage || (link.href !== "/" && currentPage.startsWith(link.href))) ? ' class="active"' : "";
+      var active = isActiveLink(link, currentPage) ? ' class="active"' : "";
       return '<li><a href="' + link.href + '"' + active + ">" + link.label + "</a></li>";
     }).join("\n          ");
 

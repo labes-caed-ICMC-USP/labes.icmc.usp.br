@@ -1,20 +1,20 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Perfil do Orientador - LabES</title>
-  <meta name="description" content="Perfil de orientador do Laborat&oacute;rio de Engenharia de Software do ICMC-USP">
-  <meta name="keywords" content="LabES, orientador, engenharia de software, ICMC, USP">
-  <link rel="canonical" href="https://www.labes.icmc.usp.br/orientador/">
+  <title>Equipe - LabES</title>
+  <meta name="description" content="Equipe do Laborat&oacute;rio de Engenharia de Software do ICMC-USP: orientadores, mestrandos e docentes hist&oacute;ricos">
+  <meta name="keywords" content="LabES, equipe, orientadores, mestrandos, engenharia de software, ICMC, USP">
+  <link rel="canonical" href="https://www.labes.icmc.usp.br/equipe/">
 
   <meta property="og:locale" content="pt_BR">
-  <meta property="og:type" content="profile">
+  <meta property="og:type" content="website">
   <meta property="og:site_name" content="LabES">
-  <meta property="og:title" content="Perfil do Orientador - LabES">
-  <meta property="og:description" content="Perfil de orientador do Laboratório de Engenharia de Software do ICMC-USP">
-  <meta property="og:url" content="https://www.labes.icmc.usp.br/orientador/">
+  <meta property="og:title" content="Equipe - LabES">
+  <meta property="og:description" content="Equipe do Laboratório de Engenharia de Software do ICMC-USP: orientadores, mestrandos e docentes históricos">
+  <meta property="og:url" content="https://www.labes.icmc.usp.br/equipe/">
   <meta property="og:image" content="https://www.labes.icmc.usp.br/assets/img/labes-logo-share.png">
   <meta property="og:image:secure_url" content="https://www.labes.icmc.usp.br/assets/img/labes-logo-share.png">
   <meta property="og:image:type" content="image/png">
@@ -22,8 +22,8 @@
   <meta property="og:image:height" content="1200">
   <meta property="og:image:alt" content="Logo do LabES">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Perfil do Orientador - LabES">
-  <meta name="twitter:description" content="Perfil de orientador do Laboratório de Engenharia de Software do ICMC-USP">
+  <meta name="twitter:title" content="Equipe - LabES">
+  <meta name="twitter:description" content="Equipe do Laboratório de Engenharia de Software do ICMC-USP: orientadores, mestrandos e docentes históricos">
   <meta name="twitter:image" content="https://www.labes.icmc.usp.br/assets/img/labes-logo-share.png">
   <script type="application/ld+json">
   {
@@ -41,12 +41,6 @@
         "position": 2,
         "name": "Equipe",
         "item": "https://www.labes.icmc.usp.br/equipe/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Perfil do Orientador",
-        "item": "https://www.labes.icmc.usp.br/orientador/"
       }
     ]
   }
@@ -73,7 +67,7 @@
   <link href="../assets/css/main.css" rel="stylesheet">
 </head>
 
-<body class="equipe-profile-page">
+<body class="equipe-page">
 
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-end">
@@ -84,22 +78,49 @@
 
     <div class="page-title light-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 id="equipe-page-title" class="mb-2 mb-lg-0">Perfil do orientador</h1>
+        <h1 class="mb-2 mb-lg-0">Equipe</h1>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="/">Home</a></li>
-            <li><a href="/equipe/">Equipe</a></li>
-            <li><a href="/equipe/#orientadores">Orientadores</a></li>
-            <li id="equipe-breadcrumb" class="current">Perfil</li>
+            <li class="current">Equipe</li>
           </ol>
         </nav>
       </div>
     </div>
 
-    <section id="equipe-profile-section" class="orientador-profile section">
-      <div class="container" data-aos="fade-up">
-        <div id="equipe-profile-status" class="orientadores-status" role="status">Carregando perfil...</div>
-        <div id="equipe-profile" data-tipo="orientador"></div>
+    <section id="orientadores" class="orientadores equipe-section section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Orientadores</h2>
+        <p>Conhe&ccedil;a os pesquisadores que orientam atividades acad&ecirc;micas e cient&iacute;ficas no LabES.</p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div id="orientadores-status" class="orientadores-status" role="status">Carregando orientadores...</div>
+        <div id="orientadores-list" class="row gy-4"></div>
+      </div>
+    </section>
+
+    <section id="mestrandos" class="equipe-mestrandos equipe-section section light-background">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Mestrandos</h2>
+        <p>Estudantes de mestrado que desenvolvem suas pesquisas no LabES sob orienta&ccedil;&atilde;o dos docentes do laborat&oacute;rio.</p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div id="mestrandos-status" class="orientadores-status" role="status">Carregando mestrandos...</div>
+        <div id="mestrandos-list" class="row gy-4 justify-content-center"></div>
+      </div>
+    </section>
+
+    <section id="docentes-historicos" class="orientadores-inativos equipe-section section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Docentes Históricos</h2>
+        <p>Docentes que fizeram parte da história e formação do LabES.</p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div id="orientadores-inativos-status" class="orientadores-status" role="status"></div>
+        <div id="orientadores-inativos-list" class="row gy-4 justify-content-center"></div>
       </div>
     </section>
 

@@ -9,7 +9,7 @@
       { "label": "Início", "href": "/" },
       { "label": "Manual do Aluno", "href": "/manual-do-aluno/" },
       { "label": "CAEd", "href": "/caed/" },
-      { "label": "Orientadores", "href": "/orientadores/" }
+      { "label": "Equipe", "href": "/equipe/", "match": ["/orientador/", "/mestrando/"] }
     ]
   },
   "footer": {
