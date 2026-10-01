@@ -2,7 +2,8 @@
   {
     "id": "rosana-braga",
     "tipo": "historico",
-    "nome": "Rosana",
+    "nome": "Rosana Braga",
+    "cidadeNatal": "",
     "foto": "",
     "email": "",
     "site": "",
@@ -19,7 +20,8 @@
   {
     "id": "seiji-isotani",
     "tipo": "historico",
-    "nome": "Seiji",
+    "nome": "Seiji Isotani",
+    "cidadeNatal": "",
     "foto": "",
     "email": "",
     "site": "",
@@ -37,6 +39,7 @@
     "id": "joao-porto",
     "tipo": "historico",
     "nome": "João Porto",
+    "cidadeNatal": "",
     "foto": "",
     "email": "",
     "site": "",
@@ -53,7 +56,8 @@
   {
     "id": "paulo-masiero",
     "tipo": "historico",
-    "nome": "Masiero",
+    "nome": "Paulo Masiero",
+    "cidadeNatal": "",
     "foto": "",
     "email": "",
     "site": "",
@@ -70,7 +74,8 @@
   {
     "id": "rosely-sanches",
     "tipo": "historico",
-    "nome": "Rosely",
+    "nome": "Rosely Sanches",
+    "cidadeNatal": "",
     "foto": "",
     "email": "",
     "site": "",
@@ -87,7 +92,8 @@
   {
     "id": "fernao-vines",
     "tipo": "historico",
-    "nome": "Fernão",
+    "nome": "Fernão Vines",
+    "cidadeNatal": "",
     "foto": "",
     "email": "",
     "site": "",

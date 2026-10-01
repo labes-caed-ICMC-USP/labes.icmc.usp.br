@@ -3,13 +3,52 @@
 
   const DATA_URLS = {
     orientadores: "/assets/data/orientadores.json",
-    historicos: "/assets/data/orientadores-inativos.json",
-    mestrandos: "/assets/data/mestrandos.json"
+    historicos: "/assets/data/orientadores-inativos.json"
   };
   const EQUIPE_URL = "/equipe/";
-  const PROFILE_PATHS = {
-    orientador: "/orientador/",
-    mestrando: "/mestrando/"
+  const ORIENTADOR_PROFILE_PATH = "/orientador/";
+  const ORIENTACAO_LABELS = { orientacao: "Orientação", coorientacao: "Coorientação" };
+  const SUPERVISAO_LABELS = { orientacao: "Supervisão", coorientacao: "Cossupervisão" };
+
+  /**
+   * Categorias de orientandos. Todas usam o mesmo formato de JSON e de perfil;
+   * mudam apenas os textos e os endereços. `section` é o id da seção na página
+   * da equipe (e o prefixo de `#<section>-list` / `#<section>-status`). A ordem
+   * aqui é a ordem dos blocos de orientandos no perfil do orientador.
+   */
+  const ORIENTANDO_TIPOS = {
+    posdoc: {
+      dataUrl: "/assets/data/pos-docs.json",
+      profilePath: "/pos-doc/",
+      section: "pos-docs",
+      kicker: "Pós-doc LabES",
+      orientandosTitle: "Pós-docs supervisionados",
+      labels: SUPERVISAO_LABELS
+    },
+    doutorando: {
+      dataUrl: "/assets/data/doutorandos.json",
+      profilePath: "/doutorando/",
+      section: "doutorandos",
+      kicker: "Doutorando(a) LabES",
+      orientandosTitle: "Orientandos de doutorado",
+      labels: ORIENTACAO_LABELS
+    },
+    mestrando: {
+      dataUrl: "/assets/data/mestrandos.json",
+      profilePath: "/mestrando/",
+      section: "mestrandos",
+      kicker: "Mestrando(a) LabES",
+      orientandosTitle: "Orientandos de mestrado",
+      labels: ORIENTACAO_LABELS
+    },
+    ic: {
+      dataUrl: "/assets/data/iniciacao-cientifica.json",
+      profilePath: "/iniciacao-cientifica/",
+      section: "iniciacao-cientifica",
+      kicker: "Iniciação Científica LabES",
+      orientandosTitle: "Orientandos de iniciação científica",
+      labels: ORIENTACAO_LABELS
+    }
   };
   const EMPTY_PROFILE_MESSAGE = "Nenhuma informação complementar cadastrada.";
   const RESEARCH_SUBLINE_PREFIX = "-- ";
@@ -87,7 +126,7 @@
   }
 
   function profileUrl(pessoa, tipo) {
-    const base = PROFILE_PATHS[tipo] || PROFILE_PATHS.orientador;
+    const base = ORIENTANDO_TIPOS[tipo] ? ORIENTANDO_TIPOS[tipo].profilePath : ORIENTADOR_PROFILE_PATH;
     return `${base}?id=${encodeURIComponent(normalizedText(pessoa.id))}`;
   }
 
@@ -442,9 +481,11 @@
     });
   }
 
-  function renderMestrandos(mestrandos, docentes) {
-    const list = document.querySelector("#mestrandos-list");
-    const status = document.querySelector("#mestrandos-status");
+  function renderOrientandos(tipo, orientandos, docentes) {
+    const config = ORIENTANDO_TIPOS[tipo];
+    const section = document.querySelector(`#${config.section}`);
+    const list = document.querySelector(`#${config.section}-list`);
+    const status = document.querySelector(`#${config.section}-status`);
 
     if (!list) {
       return;
@@ -452,31 +493,34 @@
 
     list.replaceChildren();
 
-    if (!Array.isArray(mestrandos) || mestrandos.length === 0) {
-      setStatus(status, "Nenhum mestrando cadastrado no momento.");
+    // Categoria sem ninguém cadastrado fica oculta até a primeira entrada no JSON.
+    if (!Array.isArray(orientandos) || orientandos.length === 0) {
+      if (section) {
+        section.hidden = true;
+      }
       return;
     }
 
     setStatus(status, "");
 
-    mestrandos.forEach((mestrando, index) => {
+    orientandos.forEach((orientando, index) => {
       const column = createElement("div", "col-lg-2 col-md-3 col-sm-4 col-6");
       column.setAttribute("data-aos", "fade-up");
       column.setAttribute("data-aos-delay", String(100 + index * 50));
 
-      const nome = normalizedText(mestrando.nome);
+      const nome = normalizedText(orientando.nome);
       const card = createElement("article", "equipe-card-compact");
-      makeCardNavigable(card, profileUrl(mestrando, "mestrando"), `Abrir perfil de ${nome}`);
+      makeCardNavigable(card, profileUrl(orientando, tipo), `Abrir perfil de ${nome}`);
 
-      card.appendChild(createPhoto(mestrando, "equipe-photo-compact"));
+      card.appendChild(createPhoto(orientando, "equipe-photo-compact"));
       card.appendChild(createElement("p", "equipe-compact-nome", nome));
 
-      const orientador = resolveOrientador(mestrando.orientador, docentes);
+      const orientador = resolveOrientador(orientando.orientador, docentes);
       if (orientador) {
         const meta = createElement("p", "equipe-compact-meta");
-        meta.appendChild(createElement("span", "equipe-compact-label", "Orientação"));
+        meta.appendChild(createElement("span", "equipe-compact-label", config.labels.orientacao));
         meta.appendChild(document.createTextNode(orientador.nome));
-        meta.title = `Orientação: ${orientador.nome}`;
+        meta.title = `${config.labels.orientacao}: ${orientador.nome}`;
         card.appendChild(meta);
       }
 
@@ -518,18 +562,18 @@
     return item;
   }
 
-  function createMestrandoMeta(mestrando, docentes) {
+  function createOrientandoMeta(orientando, docentes, labels) {
     const meta = createElement("ul", "equipe-profile-meta");
-    const orientador = resolveOrientador(mestrando.orientador, docentes);
-    const coorientador = resolveOrientador(mestrando.coorientador, docentes);
-    const ingresso = normalizedText(mestrando.ingresso);
+    const orientador = resolveOrientador(orientando.orientador, docentes);
+    const coorientador = resolveOrientador(orientando.coorientador, docentes);
+    const ingresso = normalizedText(orientando.ingresso);
 
     if (orientador) {
-      meta.appendChild(createMetaItem("bi-person-check", "Orientação", orientador.nome, orientador.url));
+      meta.appendChild(createMetaItem("bi-person-check", labels.orientacao, orientador.nome, orientador.url));
     }
 
     if (coorientador) {
-      meta.appendChild(createMetaItem("bi-person-plus", "Coorientação", coorientador.nome, coorientador.url));
+      meta.appendChild(createMetaItem("bi-person-plus", labels.coorientacao, coorientador.nome, coorientador.url));
     }
 
     if (ingresso) {
@@ -539,14 +583,14 @@
     return meta.children.length > 0 ? meta : null;
   }
 
-  function createResearchBlock(pessoa, tipo) {
+  function createResearchBlock(pessoa, isOrientando) {
     const block = createElement("section", "orientador-info-block orientador-research-block");
     const heading = createElement("h3");
     heading.appendChild(createElement("i", "bi bi-diagram-3"));
-    heading.appendChild(document.createTextNode(tipo === "mestrando" ? "Pesquisa" : "Linhas de pesquisa"));
+    heading.appendChild(document.createTextNode(isOrientando ? "Pesquisa" : "Linhas de pesquisa"));
     block.appendChild(heading);
 
-    const tema = tipo === "mestrando" ? normalizedText(pessoa.tema) : "";
+    const tema = isOrientando ? normalizedText(pessoa.tema) : "";
     if (tema) {
       block.appendChild(createElement("p", "equipe-research-tema", tema));
     }
@@ -559,10 +603,11 @@
     return tema || researchList ? block : null;
   }
 
-  function createOrientandosBlock(orientador, mestrandos) {
+  function createOrientandosBlock(orientador, tipo, pessoas) {
+    const config = ORIENTANDO_TIPOS[tipo];
     const id = normalizedText(orientador.id);
-    const orientandos = Array.isArray(mestrandos)
-      ? mestrandos.filter(mestrando => normalizedText(mestrando.orientador) === id || normalizedText(mestrando.coorientador) === id)
+    const orientandos = Array.isArray(pessoas)
+      ? pessoas.filter(pessoa => normalizedText(pessoa.orientador) === id || normalizedText(pessoa.coorientador) === id)
       : [];
 
     if (!id || orientandos.length === 0) {
@@ -572,19 +617,19 @@
     const block = createElement("section", "orientador-info-block equipe-orientandos-block");
     const heading = createElement("h3");
     heading.appendChild(createElement("i", "bi bi-mortarboard"));
-    heading.appendChild(document.createTextNode("Orientandos de mestrado"));
+    heading.appendChild(document.createTextNode(config.orientandosTitle));
     block.appendChild(heading);
 
     const list = createElement("ul", "equipe-orientandos-list");
 
-    orientandos.forEach(mestrando => {
+    orientandos.forEach(orientando => {
       const item = createElement("li");
-      const anchor = createElement("a", "", normalizedText(mestrando.nome));
-      anchor.href = profileUrl(mestrando, "mestrando");
+      const anchor = createElement("a", "", normalizedText(orientando.nome));
+      anchor.href = profileUrl(orientando, tipo);
       anchor.prepend(createElement("i", "bi bi-person-circle"));
 
-      if (normalizedText(mestrando.coorientador) === id && normalizedText(mestrando.orientador) !== id) {
-        anchor.appendChild(createElement("span", "equipe-orientandos-note", "(coorientação)"));
+      if (normalizedText(orientando.coorientador) === id && normalizedText(orientando.orientador) !== id) {
+        anchor.appendChild(createElement("span", "equipe-orientandos-note", `(${config.labels.coorientacao.toLowerCase()})`));
       }
 
       item.appendChild(anchor);
@@ -596,16 +641,16 @@
   }
 
   function profileKicker(pessoa, tipo) {
-    if (tipo === "mestrando") {
-      return "Mestrando(a) LabES";
+    if (ORIENTANDO_TIPOS[tipo]) {
+      return ORIENTANDO_TIPOS[tipo].kicker;
     }
 
     return pessoa.tipo === "historico" ? "Docente Histórico LabES" : "Orientador LabES";
   }
 
   function backLinkUrl(pessoa, tipo) {
-    if (tipo === "mestrando") {
-      return `${EQUIPE_URL}#mestrandos`;
+    if (ORIENTANDO_TIPOS[tipo]) {
+      return `${EQUIPE_URL}#${ORIENTANDO_TIPOS[tipo].section}`;
     }
 
     return pessoa.tipo === "historico" ? `${EQUIPE_URL}#docentes-historicos` : EQUIPE_URL;
@@ -619,8 +664,9 @@
       return;
     }
 
+    const config = ORIENTANDO_TIPOS[tipo];
     const docentes = [...data.orientadores, ...data.historicos];
-    const source = tipo === "mestrando" ? data.mestrandos : docentes;
+    const source = config ? data.orientandos[tipo] : docentes;
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
     const pessoa = findById(source, id);
@@ -655,8 +701,8 @@
     heroContent.appendChild(createElement("p", "orientador-profile-kicker", profileKicker(pessoa, tipo)));
     heroContent.appendChild(createElement("h2", "", nome));
 
-    if (tipo === "mestrando") {
-      const meta = createMestrandoMeta(pessoa, docentes);
+    if (config) {
+      const meta = createOrientandoMeta(pessoa, docentes, config.labels);
       if (meta) {
         heroContent.appendChild(meta);
       }
@@ -683,9 +729,13 @@
 
     const details = createElement("div", "orientador-profile-details");
 
+    const orientandosBlocks = config
+      ? []
+      : Object.keys(ORIENTANDO_TIPOS).map(orientandoTipo => createOrientandosBlock(pessoa, orientandoTipo, data.orientandos[orientandoTipo]));
+
     [
-      createResearchBlock(pessoa, tipo),
-      tipo === "orientador" ? createOrientandosBlock(pessoa, data.mestrandos) : null,
+      createResearchBlock(pessoa, Boolean(config)),
+      ...orientandosBlocks,
       createInfoBlock("Curiosidade", "bi-stars", pessoa.curiosidade),
       createInfoBlock("Hobby", "bi-heart", pessoa.hobby)
     ].filter(Boolean).forEach(block => details.appendChild(block));
@@ -700,6 +750,17 @@
     backLink.href = backLinkUrl(pessoa, tipo);
     backLink.prepend(createElement("i", "bi bi-arrow-left-short"));
     profile.appendChild(backLink);
+  }
+
+  /**
+   * As seções da equipe alternam fundo branco e claro. Como seções vazias são
+   * ocultadas, recalcula a alternância só entre as visíveis para que duas
+   * vizinhas não fiquem com o mesmo fundo.
+   */
+  function updateSectionBackgrounds() {
+    document.querySelectorAll(".equipe-section:not([hidden])").forEach((section, index) => {
+      section.classList.toggle("light-background", index % 2 === 1);
+    });
   }
 
   function refreshAnimations() {
@@ -755,14 +816,20 @@
   }
 
   function initProfile(profile) {
-    const tipo = PROFILE_PATHS[profile.dataset.tipo] ? profile.dataset.tipo : "orientador";
+    const tipo = ORIENTANDO_TIPOS[profile.dataset.tipo] ? profile.dataset.tipo : "orientador";
+    const orientandoTipos = Object.keys(ORIENTANDO_TIPOS);
 
     Promise.all([
       loadOptional(DATA_URLS.orientadores),
       loadOptional(DATA_URLS.historicos),
-      loadOptional(DATA_URLS.mestrandos)
-    ]).then(([orientadores, historicos, mestrandos]) => {
-      renderProfile(tipo, { orientadores, historicos, mestrandos });
+      ...orientandoTipos.map(orientandoTipo => loadOptional(ORIENTANDO_TIPOS[orientandoTipo].dataUrl))
+    ]).then(([orientadores, historicos, ...listas]) => {
+      const orientandos = {};
+      orientandoTipos.forEach((orientandoTipo, index) => {
+        orientandos[orientandoTipo] = listas[index];
+      });
+
+      renderProfile(tipo, { orientadores, historicos, orientandos });
       refreshAnimations();
     }).catch(error => {
       setStatus(document.querySelector("#equipe-profile-status"), error.message, true);
@@ -772,13 +839,19 @@
   function initLists() {
     const hasOrientadores = document.querySelector("#orientadores-list");
     const hasHistoricos = document.querySelector("#orientadores-inativos-list");
-    const hasMestrandos = document.querySelector("#mestrandos-list");
+    const orientandoTipos = Object.keys(ORIENTANDO_TIPOS)
+      .filter(tipo => document.querySelector(`#${ORIENTANDO_TIPOS[tipo].section}-list`));
 
-    if (!hasOrientadores && !hasHistoricos && !hasMestrandos) {
+    if (!hasOrientadores && !hasHistoricos && orientandoTipos.length === 0) {
       return;
     }
 
     const orientadoresPromise = loadJSON(DATA_URLS.orientadores);
+    const historicosPromise = loadJSON(DATA_URLS.historicos);
+    const docentesPromise = Promise.all([
+      orientadoresPromise.catch(() => []),
+      historicosPromise.catch(() => [])
+    ]).then(([orientadores, historicos]) => [...orientadores, ...historicos]);
 
     const p1 = hasOrientadores
       ? orientadoresPromise
@@ -787,22 +860,19 @@
       : Promise.resolve();
 
     const p2 = hasHistoricos
-      ? loadJSON(DATA_URLS.historicos)
+      ? historicosPromise
           .then(historicos => renderHistoricos(historicos))
           .catch(error => setStatus(document.querySelector("#orientadores-inativos-status"), error.message, true))
       : Promise.resolve();
 
-    const p3 = hasMestrandos
-      ? Promise.all([
-          loadJSON(DATA_URLS.mestrandos),
-          orientadoresPromise.catch(() => []),
-          loadOptional(DATA_URLS.historicos)
-        ])
-          .then(([mestrandos, orientadores, historicos]) => renderMestrandos(mestrandos, [...orientadores, ...historicos]))
-          .catch(error => setStatus(document.querySelector("#mestrandos-status"), error.message, true))
-      : Promise.resolve();
+    const orientandosPromises = orientandoTipos.map(tipo =>
+      Promise.all([loadJSON(ORIENTANDO_TIPOS[tipo].dataUrl), docentesPromise])
+        .then(([orientandos, docentes]) => renderOrientandos(tipo, orientandos, docentes))
+        .catch(error => setStatus(document.querySelector(`#${ORIENTANDO_TIPOS[tipo].section}-status`), error.message, true))
+    );
 
-    Promise.all([p1, p2, p3]).then(() => {
+    Promise.all([p1, p2, ...orientandosPromises]).then(() => {
+      updateSectionBackgrounds();
       refreshAnimations();
       scheduleHashRestore();
     });

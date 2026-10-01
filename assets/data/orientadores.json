@@ -2,6 +2,7 @@
   {
     "id": "adenilso-simao",
     "nome": "Adenilso da Silva Simão",
+    "cidadeNatal": "",
     "foto": "/assets/img/orientadores/adenilso-da-silva-simao.png",
     "email": "adenilso@icmc.usp.br",
     "site": "https://sites.icmc.usp.br/adenilso/",
@@ -23,6 +24,7 @@
   {
     "id": "marcio-eduardo-delamaro",
     "nome": "Márcio Eduardo Delamaro",
+    "cidadeNatal": "",
     "foto": "/assets/img/orientadores/marcio-eduardo-delamaro.png",
     "email": "delamaro@icmc.usp.br",
     "site": "https://sites.icmc.usp.br/delamaro/",
@@ -45,6 +47,7 @@
   {
     "id": "jose-carlos-maldonado",
     "nome": "José Carlos Maldonado",
+    "cidadeNatal": "",
     "foto": "/assets/img/orientadores/jose-carlos-maldonado.png",
     "email": "jcmaldon@icmc.usp.br",
     "site": "https://www.icmc.usp.br/pessoas?id=172107",
@@ -72,6 +75,7 @@
   {
     "id": "elisa-yumi-nakagawa",
     "nome": "Elisa Yumi Nakagawa",
+    "cidadeNatal": "",
     "foto": "/assets/img/orientadores/elisa-yumi-nakagawa.png",
     "email": "elisa@icmc.usp.br",
     "site": "https://sites.icmc.usp.br/elisa/",
@@ -103,6 +107,7 @@
   {
     "id": "ellen-francine-barbosa",
     "nome": "Ellen Francine Barbosa",
+    "cidadeNatal": "",
     "foto": "/assets/img/orientadores/ellen-francine-barbosa.png",
     "email": "francine@icmc.usp.br",
     "site": "https://www.icmc.usp.br/pessoas?id=4325299",
@@ -132,6 +137,7 @@
   {
     "id": "simone-do-rocio-senger-de-souza",
     "nome": "Simone do Rocio Senger de Souza",
+    "cidadeNatal": "",
     "foto": "/assets/img/orientadores/simone-do-rocio-senger-de-souza.png",
     "email": "srocio@icmc.usp.br",
     "site": "https://www.icmc.usp.br/pessoas?id=3685313",
@@ -157,6 +163,7 @@
   {
     "id": "lina-garces",
     "nome": "Lina Maria Garcés Rodriguez",
+    "cidadeNatal": "",
     "foto": "/assets/img/orientadores/lina-garces.png",
     "email": "linagarces@usp.br",
     "site": "https://icmc.usp.br/pessoas?id=16856723",
